@@ -33,7 +33,7 @@ export default function Home() {
             Café artisanal premium
           </p>
           <h1 className="mt-5 max-w-3xl text-4xl font-semibold leading-tight text-foreground md:text-6xl">
-            {`Des cafes de caractere, livrés avec l'élegance d'une épicerie fine.`}
+            {`Des cafés de caractères, livrés avec l'élegance d'une épicerie fine.`}
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-8 text-muted">
             {`Kawa Maison présente une experience e-commerce complete: catalogue, fiche produit,
