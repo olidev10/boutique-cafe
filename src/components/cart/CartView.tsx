@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { CartItem } from "@/components/cart/CartItem";
+import { MinorRestrictionAlert } from "@/components/cart/MinorRestrictionAlert";
 import { formatPrice } from "@/lib/format-price";
 import { useCartStore } from "@/lib/cart-store";
 import { useHasMounted } from "@/lib/use-has-mounted";
@@ -21,6 +22,8 @@ export function CartView() {
         <p className="text-sm font-semibold uppercase tracking-[0.16em] text-gold">Panier</p>
         <h1 className="mt-3 text-4xl font-semibold">Votre selection</h1>
       </div>
+
+      <MinorRestrictionAlert />
 
       {!hasMounted ? (
         <div className="rounded-lg border border-border bg-card p-8 text-center">

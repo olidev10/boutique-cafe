@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { CreditCard, Loader2 } from "lucide-react";
+import { MinorRestrictionAlert } from "@/components/cart/MinorRestrictionAlert";
 import { formatPrice } from "@/lib/format-price";
 import { useCartStore } from "@/lib/cart-store";
 import { useHasMounted } from "@/lib/use-has-mounted";
@@ -68,6 +69,8 @@ export function CheckoutForm() {
           Verifiez votre panier avant d&apos;etre redirige vers Stripe pour le paiement securise.
         </p>
       </div>
+
+      <MinorRestrictionAlert />
 
       <form onSubmit={handleSubmit} className="grid gap-8 lg:grid-cols-[1fr_360px]">
         <div className="grid gap-5 rounded-lg border border-border bg-card p-6">
