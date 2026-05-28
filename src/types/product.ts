@@ -21,4 +21,6 @@ export type Product = {
   isFeatured: boolean;
   notes: string[];
   brewingAdvice: string;
+  stripeProductId: string;
+  stripePriceId: string;
 };

@@ -1,74 +1,121 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { useState } from "react";
+import { CreditCard, Loader2 } from "lucide-react";
 import { formatPrice } from "@/lib/format-price";
 import { useCartStore } from "@/lib/cart-store";
+import { useHasMounted } from "@/lib/use-has-mounted";
 
 const shipping = 490;
 
 export function CheckoutForm() {
-  const router = useRouter();
+  const hasMounted = useHasMounted();
   const items = useCartStore((state) => state.items);
   const subtotal = useCartStore((state) => state.getSubtotal());
-  const clearCart = useCartStore((state) => state.clearCart);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const total = subtotal > 0 ? subtotal + shipping : 0;
 
-  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    clearCart();
-    router.push("/checkout/success");
+
+    if (items.length === 0) {
+      setError("Votre panier est vide.");
+      return;
+    }
+
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const response = await fetch("/api/stripe/checkout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          items: items.map((item) => ({
+            productId: item.product.id,
+            quantity: item.quantity,
+          })),
+        }),
+      });
+
+      const data = (await response.json()) as { url?: string; error?: string };
+
+      if (!response.ok || !data.url) {
+        throw new Error(data.error ?? "Impossible de demarrer le paiement.");
+      }
+
+      window.location.assign(data.url);
+    } catch (checkoutError) {
+      setError(
+        checkoutError instanceof Error
+          ? checkoutError.message
+          : "Impossible de demarrer le paiement.",
+      );
+      setIsLoading(false);
+    }
   }
 
   return (
     <section className="container-shell section-space">
       <div className="mb-8">
-        <p className="text-sm font-semibold uppercase tracking-[0.16em] text-gold">Checkout</p>
-        <h1 className="mt-3 text-4xl font-semibold">Commande simulee</h1>
+        <p className="text-sm font-semibold uppercase tracking-[0.16em] text-gold">Paiement</p>
+        <h1 className="mt-3 text-4xl font-semibold">Finaliser la commande</h1>
         <p className="mt-4 max-w-2xl text-muted">
-          Ce formulaire illustre le parcours client. Aucun paiement reel n&apos;est effectue.
+          Verifiez votre panier avant d&apos;etre redirige vers Stripe pour le paiement securise.
         </p>
       </div>
 
       <form onSubmit={handleSubmit} className="grid gap-8 lg:grid-cols-[1fr_360px]">
         <div className="grid gap-5 rounded-lg border border-border bg-card p-6">
-          <div className="grid gap-5 md:grid-cols-2">
-            <label className="grid gap-2 text-sm font-semibold">
-              Prenom
-              <input className="input-field" name="firstName" required />
-            </label>
-            <label className="grid gap-2 text-sm font-semibold">
-              Nom
-              <input className="input-field" name="lastName" required />
-            </label>
-          </div>
-          <label className="grid gap-2 text-sm font-semibold">
-            Email
-            <input className="input-field" type="email" name="email" required />
-          </label>
-          <label className="grid gap-2 text-sm font-semibold">
-            Adresse
-            <input className="input-field" name="address" required />
-          </label>
-          <div className="grid gap-5 md:grid-cols-[1fr_160px]">
-            <label className="grid gap-2 text-sm font-semibold">
-              Ville
-              <input className="input-field" name="city" required />
-            </label>
-            <label className="grid gap-2 text-sm font-semibold">
-              Code postal
-              <input className="input-field" name="postalCode" required />
-            </label>
-          </div>
-          <div className="rounded-lg border border-border bg-cream p-4 text-sm text-muted">
-            Paiement mock: la validation redirige vers une page succes et vide le panier.
+          <h2 className="text-xl font-semibold">Articles</h2>
+          {!hasMounted ? (
+            <div className="rounded-lg border border-border bg-cream p-5">
+              <p className="text-muted">Chargement de votre panier.</p>
+            </div>
+          ) : items.length === 0 ? (
+            <div className="rounded-lg border border-border bg-cream p-5">
+              <p className="text-muted">Votre panier est vide.</p>
+              <Link href="/boutique" className="btn-secondary mt-4">
+                Retour a la boutique
+              </Link>
+            </div>
+          ) : (
+            <div className="grid gap-4">
+              {items.map((item) => (
+                <div
+                  key={item.product.id}
+                  className="flex items-start justify-between gap-4 border-b border-border pb-4 last:border-b-0 last:pb-0"
+                >
+                  <div>
+                    <p className="font-semibold">{item.product.name}</p>
+                    <p className="mt-1 text-sm text-muted">
+                      {item.product.weight} - quantite {item.quantity}
+                    </p>
+                  </div>
+                  <p className="shrink-0 font-semibold">
+                    {formatPrice(item.product.price * item.quantity)}
+                  </p>
+                </div>
+              ))}
+            </div>
+          )}
+          <div className="rounded-lg border border-border bg-cream p-4 text-sm leading-6 text-muted">
+            Stripe demandera l&apos;email, l&apos;adresse de livraison et les informations de carte sur
+            une page hebergee securisee.
           </div>
         </div>
 
         <aside className="h-fit rounded-lg border border-border bg-card p-6 soft-shadow">
           <h2 className="text-xl font-semibold">Votre commande</h2>
           <div className="mt-5 grid gap-3 text-sm">
-            {items.length === 0 ? (
-              <p className="text-muted">Panier vide. Vous pouvez quand meme tester la validation.</p>
+            {!hasMounted ? (
+              <p className="text-muted">Chargement du panier.</p>
+            ) : items.length === 0 ? (
+              <p className="text-muted">Panier vide. Ajoutez un produit pour lancer le paiement.</p>
             ) : (
               items.map((item) => (
                 <div key={item.product.id} className="flex justify-between gap-4">
@@ -88,8 +135,22 @@ export function CheckoutForm() {
               <span className="font-semibold">{formatPrice(total)}</span>
             </div>
           </div>
-          <button type="submit" className="btn-primary mt-6 w-full">
-            Confirmer la commande
+          {error ? (
+            <p className="mt-5 rounded-lg border border-red-200 bg-red-50 p-3 text-sm font-medium text-red-700">
+              {error}
+            </p>
+          ) : null}
+          <button
+            type="submit"
+            className="btn-primary mt-6 w-full disabled:cursor-not-allowed disabled:opacity-60"
+            disabled={!hasMounted || isLoading || items.length === 0}
+          >
+            {isLoading ? (
+              <Loader2 size={18} className="animate-spin" aria-hidden="true" />
+            ) : (
+              <CreditCard size={18} aria-hidden="true" />
+            )}
+            {isLoading ? "Redirection..." : "Payer avec Stripe"}
           </button>
         </aside>
       </form>

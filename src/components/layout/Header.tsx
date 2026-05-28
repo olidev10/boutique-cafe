@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { ShoppingBag } from "lucide-react";
 import { useCartStore } from "@/lib/cart-store";
+import { useHasMounted } from "@/lib/use-has-mounted";
 
 const navItems = [
   { href: "/", label: "Accueil" },
@@ -12,6 +13,7 @@ const navItems = [
 ];
 
 export function Header() {
+  const hasMounted = useHasMounted();
   const totalItems = useCartStore((state) => state.getTotalItems());
 
   return (
@@ -34,7 +36,7 @@ export function Header() {
         <Link href="/panier" className="btn-secondary relative min-h-11 px-4" aria-label="Panier">
           <ShoppingBag size={18} aria-hidden="true" />
           <span className="hidden sm:inline">Panier</span>
-          {totalItems > 0 ? (
+          {hasMounted && totalItems > 0 ? (
             <span className="absolute -right-2 -top-2 grid h-6 min-w-6 place-items-center rounded-full bg-gold px-1 text-xs font-bold text-foreground">
               {totalItems}
             </span>

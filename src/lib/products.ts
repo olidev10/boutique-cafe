@@ -26,6 +26,8 @@ export const products: Product[] = [
     isFeatured: true,
     notes: ["jasmin", "bergamote", "miel clair"],
     brewingAdvice: "Parfait en V60, Chemex ou cafetiere filtre avec une mouture moyenne.",
+    stripeProductId: 'prod_UbK9IwbmHJMq2S',
+    stripePriceId: 'price_1Tc7V3QX3TL48xlZPjjIU0Hs'
   },
   {
     id: "prd_colombia_supremo",
@@ -44,6 +46,8 @@ export const products: Product[] = [
     isFeatured: true,
     notes: ["cacao", "amande", "orange douce"],
     brewingAdvice: "Excellent en espresso doux, moka italienne ou filtre.",
+    stripeProductId: 'prod_UbK999aIGHnEVL',
+    stripePriceId: 'price_1Tc7V4QX3TL48xlZdS4Zb6Ak'
   },
   {
     id: "prd_brazil_cerrado",
@@ -62,6 +66,8 @@ export const products: Product[] = [
     isFeatured: false,
     notes: ["noisette", "chocolat au lait", "sucre brun"],
     brewingAdvice: "Reglage fin conseille pour espresso, egalement tres agreable en cafetiere piston.",
+    stripeProductId: 'prod_UbK9N45acEZLDh',
+    stripePriceId: 'price_1Tc7V5QX3TL48xlZu0tkqfnk',
   },
   {
     id: "prd_rwanda_bourbon",
@@ -80,6 +86,8 @@ export const products: Product[] = [
     isFeatured: true,
     notes: ["groseille", "the noir", "epices douces"],
     brewingAdvice: "Mouture adaptee filtre et piston. Utiliser une eau peu mineralisee.",
+    stripeProductId: 'prod_UbK9nIuHth1onj',
+    stripePriceId: 'price_1Tc7V6QX3TL48xlZYXXQwMSI',
   },
   {
     id: "prd_pack_afrique",
@@ -98,6 +106,8 @@ export const products: Product[] = [
     isFeatured: true,
     notes: ["agrumes", "fruits rouges", "fleurs blanches"],
     brewingAdvice: "Deguster les trois cafes sur la meme methode pour comparer les aromes.",
+    stripeProductId: 'prod_UbK92EAeqM1cB7',
+  stripePriceId: 'price_1Tc7V7QX3TL48xlZxoVCHzj6',
   },
   {
     id: "prd_pack_espresso",
@@ -116,6 +126,8 @@ export const products: Product[] = [
     isFeatured: false,
     notes: ["cacao noir", "noix", "caramel"],
     brewingAdvice: "Dose recommandee: 18 g pour 36 g en tasse, extraction autour de 28 secondes.",
+    stripeProductId: 'prod_UbK9pkml8a7tbF',
+    stripePriceId: 'price_1Tc7V8QX3TL48xlZP9G9t2Zb'
   },
   {
     id: "prd_capsules_maison",
@@ -134,6 +146,8 @@ export const products: Product[] = [
     isFeatured: true,
     notes: ["praline", "cacao", "pain grille"],
     brewingAdvice: "Prechauffer la tasse et lancer une extraction courte pour conserver le corps.",
+    stripeProductId: 'prod_UbK95eRXlul6bo',
+    stripePriceId: 'price_1Tc7V9QX3TL48xlZck1MoSCn',
   },
   {
     id: "prd_moulin_manuel",
@@ -152,6 +166,8 @@ export const products: Product[] = [
     isFeatured: false,
     notes: ["meules acier", "reglage cran par cran", "format voyage"],
     brewingAdvice: "Moudre juste avant preparation pour preserver les aromes.",
+    stripeProductId: 'prod_UbK9vC0T1gNWcz',
+    stripePriceId: 'price_1Tc7VAQX3TL48xlZk5iriKON',
   },
   {
     id: "prd_cafetiere_piston",
@@ -170,6 +186,8 @@ export const products: Product[] = [
     isFeatured: false,
     notes: ["verre epais", "filtre inox", "poignee froide"],
     brewingAdvice: "Infuser 4 minutes avec une mouture grossiere puis presser lentement.",
+    stripeProductId: 'prod_UbK9deg63S0Z4E',
+    stripePriceId: 'price_1Tc7VBQX3TL48xlZpvmMChlD',
   },
   {
     id: "prd_cafe_moulu_doux",
@@ -188,6 +206,8 @@ export const products: Product[] = [
     isFeatured: false,
     notes: ["biscuit", "miel", "amande douce"],
     brewingAdvice: "Convient aux cafetieres filtre electriques et piston.",
+    stripeProductId: 'prod_UbK9NmCJu55Ynj',
+    stripePriceId: 'price_1Tc7VDQX3TL48xlZQ4BGRFLx',
   },
 ];
 
